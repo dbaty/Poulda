@@ -12,7 +12,7 @@ tmp_env_dir = $(tmp_dir)/testing-env
 
 .PHONY: _default
 _default:
-	@echo "make clean|cov|coverage|doc|distcheck|qa|test"
+	@echo "make clean|cov|coverage|doc|dist|distcheck|qa|test"
 
 .PHONY: clean
 clean:
@@ -29,6 +29,10 @@ coverage:
 	@echo "Coverage information is available at '$(tmp_cov_dir)'."
 
 cov: coverage
+
+PHONY: dist
+dist:
+	python setup.py sdist
 
 .PHONY: distcheck
 distcheck: clean dist
