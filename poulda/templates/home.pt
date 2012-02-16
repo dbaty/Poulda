@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="api.layout.macros['master']"
+      i18n:domain="poulda">
+<tal:content metal:fill-slot="content">
+
+  <p tal:condition="failed" class="error-msg" i18n:translate="">
+    Wrong login or password. Please try again.
+  </p>
+
+  <p tal:condition="needs_login" class="error-msg" i18n:translate="">
+    You need to log in to upload a file.
+  </p>
+
+  <form action="login" method="POST">
+    <input type="hidden" name="next" tal:attributes="value next"/>
+    <div class="form-row">
+      <label for="login" i18n:translate="">Login</label>
+      <input type="string" id="login" name="login"/>
+    </div>
+    <div class="form-row">
+      <label for="password" i18n:translate="">Password</label>
+      <input type="password" id="password" name="password"/>
+    </div>
+    <div class="form-row">
+      <input type="submit" i18n:attributes="value" value="Let me in!"/>
+    </div>
+  </form>
+
+</tal:content>
+</html>

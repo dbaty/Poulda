@@ -1,0 +1,10 @@
+-----------------------------19277021961952509530130060903
+Content-Disposition: form-data; name="file_id"
+
+74
+-----------------------------19277021961952509530130060903
+Content-Disposition: form-data; name="file"; filename="small.txt"
+Content-Type: text/plain
+
+This is a test file.
+-----------------------------19277021961952509530130060903--

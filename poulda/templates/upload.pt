@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="api.layout.macros['master']"
+      i18n:domain="poulda">
+<tal:content metal:fill-slot="content">
+
+  <form id="upload_form"
+        enctype="multipart/form-data"
+        method="POST"
+        tal:attributes="action 'upload?file_id=%d' % file_id">
+    <input type="hidden" id="file_id" name="file_id"
+           tal:attributes="value file_id"/>
+    <div class="formRow">
+      <input type="file" name="file"/>
+    </div>
+    <div class="formRow">
+      <input type="submit" i18n:attributes="value" value="Upload"/>
+    </div>
+  </form>
+
+  <div id="progress_bar_container">
+    <div id="progress_bar">12 %</div>
+  </div>
+
+  <div id="eta"></div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script tal:attributes="src api.static_url('upload.js')"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      init_upload_form();
+    });
+  </script>
+
+</tal:content>
+</html>

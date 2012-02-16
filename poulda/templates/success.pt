@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="api.layout.macros['master']"
+      i18n:domain="poulda">
+<tal:content metal:fill-slot="content">
+
+  <p i18n:translate="">
+    Your file has been successfully uploaded.
+  </p>
+
+  <p>
+    <a tal:attributes="href api.route_url('upload_form')" i18n:translate="">
+      If you wish to upload another file, follow this link.</a>
+  </p>
+
+</tal:content>
+</html>

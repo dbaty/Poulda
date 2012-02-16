@@ -1,0 +1,103 @@
+body, p, div, ol, li,
+form, input, label {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #b3db63;
+    color: black;
+    font-family: "Gill Sans", Verdana, Arial, sans-serif;
+    font-size: 100%; /* 16px */
+}
+
+a {
+    color: #479d9d;
+    font-weight: bold;
+    text-decoration: none;
+    text-decoration: underline;
+}
+
+.header {
+    background-color: #479d9d;
+    color: #457676;
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
+}
+
+.steps {
+    text-align: center;
+    font-size: 1.6em;
+    list-style-type: none;
+}
+
+.steps li {
+    display: inline;
+    padding-right: 1rem;
+}
+
+.steps li.last {
+    padding-right: 0;
+}
+
+.steps li.current {
+    color: #b3db63;
+    font-size: 2.56em;
+}
+
+.content, .footer {
+    width: 30em;
+    margin: 0 auto;
+}
+
+.footer {
+    /* FIXME: make the line darker */
+    border-top: 1px solid #c5eac7;
+    margin-top: 1em;
+    padding-top: 0.5em;
+    text-align: center;
+    text-transform: lowercase;
+}
+
+form {
+    margin-bottom: 1em;
+}
+
+.form-row {
+    padding-bottom: 0.5em;
+}
+
+.form-row label {
+    font-weight: bold;
+    display: block;
+}
+
+input {
+    font-size: 1em;
+    padding: 0.2em;
+    margin-top: 0.25em;
+}
+
+.error-msg {
+    padding: 0.5em;
+    margin-bottom: 1em;
+    border: 1px solid #c50000;
+    background-color: #e72222;
+    color: white;
+}
+
+#progress_bar_container {
+    display: none;
+    border: 1px solid grey;
+    width: 400px;
+    height: 34px;
+}
+
+#progress_bar {
+    color: white;
+    width: 0;
+    height: 34px;
+    line-height: 34px;
+    padding-left: 8.5px; /* line-height / 4 */
+    background: url("/static/progress_bar.png") repeat-x;
+}

@@ -1,0 +1,32 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:define-macro="master">
+<head>
+  <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+  <title>Poulda</title>
+  <link rel="stylesheet" type="text/css" tal:attributes="href api.static_url('main.css')"/>
+</head>
+
+<body>
+
+  <div class="header">
+    <ol class="steps">
+      <li tal:attributes="class api.step == 'home' and 'current'" i18n:translate="">Identify.</li>
+      <li tal:attributes="class api.step == 'upload' and 'current'" i18n:translate="">Upload your file.</li>
+      <li tal:attributes="class api.step == 'success' and 'current'" i18n:translate="">Rejoice.</li>
+    </ol>
+  </div>
+
+  <div class="content">
+    <metal:content metal:define-slot="content"/>
+  </div>
+
+  <div class="footer" tal:condition="api.login">
+    <a tal:attributes="href api.route_url('logout')"
+       i18n:translate="">Log out</a>
+  </div>
+
+</body>
+</html>

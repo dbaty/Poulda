@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans">
+  <meta content="text/html; charset=utf-8" http-equiv="content-type">
+  <title>Poulda &mdash; a simple file upload service</title>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+
+  <h1>Poulda &mdash; a simple file upload service</h1>
+
+  <div class="layout">
+
+    <p>
+      Poulda is a simple file upload web service. It comes from a need
+      I have to receive large files from friends and family who would
+      not be bothered to use FTP or anything more complex than a web
+      browser interface. Amongst its features are such diverse
+      elements as:
+    </p>
+
+    <ul>
+      <li>only authenticated users may upload a file;</li>
+      <li>user accounts (login and password) are set up in the WSGI
+        configuration file;</li>
+      <li>a progress bar appears during the upload (unless you disabled
+        JavaScript);</li>
+      <li>relatively old browsers should be supported relatively well;</li>
+      <li>the user interface is in English or French, hopefully not both at
+        the same time.</li>
+    </ul>
+
+    <div class="info-sheet">
+      <dl>
+        <dt>Source</dt>
+        <dd><a href="https://github.com/dbaty/poulda">https://github.com/dbaty/poulda</a></dd>
+        <dt>PyPI</dt>
+        <dd><a href="http://pypi.python.org/pypi/Poulda">http://pypi.python.org/pypi/Poulda</a></dd>
+        <dt>Latest version</dt>
+        <dd>0.8</dd>
+      </dl>
+    </div>
+
+    <h2 class="clear">Requirements</h2>
+    <p>
+      Poulda requires Python 2.7 and an RDBMS. SQLite will do very
+      well unless you expect a large number of simultaneous users (in
+      which case you may want to think twice anyway, since Poulda has
+      not been developed and tested to scale up).
+    </p>
+
+    <h2>Installation</h2>
+    <ol>
+      <li>
+        <p>
+          It is highly recommended that you install Poulda in a
+          <a href="http://pypi.python.org/pypi/virtualenv">virtual
+          environment</a>. Once you have one, you may install Poulda
+          and its dependencies:
+        </p>
+        <pre>$ easy_install Poulda</pre>
+      </li>
+      <li>
+        Download
+        the <a href="https://raw.github.com/dbaty/poulda/master/development.ini">development
+        WSGI configuration file</a> and make appropriate changes (see the
+        <a href="#configuration">Configuration</a> section below). The
+        source repository also provides <a href="https://raw.github.com/dbaty/poulda/master/production.ini">a more production-ready
+        configuration file</a>.
+      </li>
+      <li>
+        <p>
+          Install Waitress (or use your preferred WSGI server and
+          tweak the WSGI configuration file):
+        </p>
+        <pre>$ easy_install Waitress</pre>
+      </li>
+      <li>
+        <p>And finally start the application:</p>
+        <pre>$ pserve production.ini</pre>
+      </li>
+      <li></li>
+    </ol>
+
+    <h2 id="configuration">Configuration</h2>
+    <p>
+      The WSGI configuration file should be modified to fit your system
+      and your needs:
+    </p>
+    <dl>
+      <dt><code>poulda.accounts</code></dt>
+      <dd>
+        <p>
+          A space (or new line) separated list of user accounts. Each
+          user account is composed by the login, followed by a colon,
+          followed by the password. Passwords must not contain the
+          space character.
+        </p>
+        <p>Examples:</p>
+        <pre>
+poulda.accounts = jsmith:secret jane.doe:mYp3ssWord
+poulda.accounts = jsmith:secret
+                  jane.doe:mYp3ssWord</pre>
+      </dd>
+      <dt><code>poulda.db_url</code></dt>
+      <dd>
+        <p>The database connection string.</p>
+        <p>Examples:</p>
+        <pre>
+poulda.db_url = sqlite:///%(here)s/Poulda.db
+poulda.db_url = postgresql://poulda:secret_password@localhost/poulda</pre>
+      </dd>
+      <dt><code>poulda.enabled</code></dt>
+      <dd>
+        <p>
+          The string "true" if you wish to enable the service. If any
+          other value is provided, all pages will show a message that
+          indicates that the service is disabled (and users will not
+          be able to do anything).
+        </p>
+      </dd>
+      <dt><code>poulda.secret</code></dt>
+      <dd>
+        <p>
+          A secret string that will be used to encrypt authentication
+          tokens.
+        </p>
+      </dd>
+      <dt><code>poulda.upload_dir</code></dt>
+      <dd>
+        <p>
+          The path to the directory where uploaded files will be stored.
+        </p>
+      </dd>
+    </dl>
+
+    <h2>The inevitable screenshots</h2>
+    <div class="screenshots">
+      <a href="home.png"><img src="home-thumbnail.png" width="300" height="122" alt="home page"/></a>
+      <a href="upload.png"><img src="upload-thumbnail.png" width="300" height="122" alt="upload page"/></a>
+    </div>
+
+    <h2>Meta</h2>
+    <p>
+      Poulda is hosted
+      <a href="https://github.com/dbaty/poulda">on GitHub</a>. Feel
+      free to report bugs and contribute there.
+    </p>
+    <p>Poulda is based on the <a href="http://www.pylonsproject.org/">Pyramid web framework</a>.</p>
+    <p>
+      Poulda is written by Damien Baty and is licenced under the
+      <a href="https://raw.github.com/dbaty/poulda/master/LICENSE.txt">3-clause BSD license</a>.
+    </p>
+
+  </div>
+</body>
+</html>
