@@ -9,17 +9,16 @@ CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 LONG_DESCRIPTION = README + '\n\n' + CHANGES
 
 requires = ('pyramid',
-            'sqlalchemy',
-            'pyramid_tm',
-            'zope.sqlalchemy')
+            'pyramid_tm')
+extras_require = {'db': ('sqlalchemy',
+                         'zope.sqlalchemy')}
 
 setup(name='Poulda',
-      version='0.8',
+      version='0.9',
       description='Poulda - a simple upload service',
       long_description=LONG_DESCRIPTION,
       classifiers=(
         'Development Status :: 4 - Beta',
-        'Programming Language :: Python :: 2.7',
         'Framework :: Pylons',
         'License :: OSI Approved :: BSD License',
         'Natural Language :: English',
@@ -35,6 +34,7 @@ setup(name='Poulda',
       zip_safe=False,
       test_suite='poulda',
       install_requires=requires,
+      extras_require=extras_require,
       entry_points='''\
       [paste.app_factory]
       main = poulda.app:make_app

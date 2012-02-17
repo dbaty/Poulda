@@ -38,16 +38,32 @@
         <dt>PyPI</dt>
         <dd><a href="http://pypi.python.org/pypi/Poulda">http://pypi.python.org/pypi/Poulda</a></dd>
         <dt>Latest version</dt>
-        <dd>0.8</dd>
+        <dd>0.9</dd>
       </dl>
     </div>
 
     <h2 class="clear">Requirements</h2>
     <p>
-      Poulda requires Python 2.7 and an RDBMS. SQLite will do very
-      well unless you expect a large number of simultaneous users (in
-      which case you may want to think twice anyway, since Poulda has
-      not been developed and tested to scale up).
+      Poulda requires Python 2.7.
+    </p>
+
+    <p>
+      If you use Nginx, you should use
+      the <a href="http://wiki.nginx.org/HttpUploadProgressModule">Upload
+      Progress module</a>. If you do not use this module, Nginx will
+      read the entirety of the uploaded file before passing on to the
+      WSGI server, which obviously defeats the purpose of this
+      application. For further details about the support for this
+      module, see the <a href="#nginx-support">related section</a>
+      below.
+    </p>
+
+    <p>
+      If you do not use the aforementioned Nginx module, you need an
+      RDBMS. SQLite will do very well unless you expect a large number
+      of simultaneous users (in which case you may want to think twice
+      anyway, since Poulda has not been developed and tested to scale
+      up).
     </p>
 
     <h2>Installation</h2>
@@ -57,7 +73,13 @@
           It is highly recommended that you install Poulda in a
           <a href="http://pypi.python.org/pypi/virtualenv">virtual
           environment</a>. Once you have one, you may install Poulda
-          and its dependencies:
+          and its dependencies with (note the extra requirement):
+        </p>
+        <pre>$ easy_install Poulda[db]</pre>
+        <p>
+          If you use the Nginx Upload Progress module, you need not
+          the database-related Python packages, so the following line
+          will pull the minimum requirements:
         </p>
         <pre>$ easy_install Poulda</pre>
       </li>
@@ -109,7 +131,11 @@ poulda.accounts = jsmith:secret
         <p>Examples:</p>
         <pre>
 poulda.db_url = sqlite:///%(here)s/Poulda.db
-poulda.db_url = postgresql://poulda:secret_password@localhost/poulda</pre>
+poulda.db_url = postgresql://poulda:secret@localhost/poulda</pre>
+        <p>
+          This directive is ignored
+          if <code>poulda.nginx_upload_progress</code> is enabled.
+        </p>
       </dd>
       <dt><code>poulda.enabled</code></dt>
       <dd>
@@ -118,6 +144,14 @@ poulda.db_url = postgresql://poulda:secret_password@localhost/poulda</pre>
           other value is provided, all pages will show a message that
           indicates that the service is disabled (and users will not
           be able to do anything).
+        </p>
+      </dd>
+      <dt><code>poulda.nginx_upload_progress</code></dt>
+      <dd>
+        <p>
+          The string "true" if you use Nginx Upload Progress module.
+          If any other value is provided, the support will be
+          disabled.
         </p>
       </dd>
       <dt><code>poulda.secret</code></dt>
@@ -134,6 +168,58 @@ poulda.db_url = postgresql://poulda:secret_password@localhost/poulda</pre>
         </p>
       </dd>
     </dl>
+
+    <h2 id="nginx-support">Support for Nginx Upload Progress</h2>
+    <p>
+      Once you have the Nginx Upload Progress module installed, you
+      must first enable it in the WSGI configuration as stated
+      above. Also, your Nginx configuration file should be
+      modified. See below for an example (the context being
+      an <code>http</code> section).
+    </p>
+    <pre>
+# This line is required by the module.
+upload_progress uploads 1m;
+
+upstream poulda {
+  # Our upstream application, in this example served by uWSGI on
+  # a UNIX socket. 
+  server unix:/var/www/exemple.com/var/uwsgi.sock;
+}
+
+server {
+  # The usual stanza.
+  listen        80;
+  server_name   exemple.com;
+
+  # The default value is set to 1Mb.
+  client_max_body_size 500M;
+
+  location /static/ {
+    alias       /var/www/exemple.com/static/;
+  }
+
+  # This section is required.
+  location ^~ /progress {
+    upload_progress_json_output;
+    report_uploads    uploads;
+  }
+
+  location / {
+    # Those two lines are because we use uWSGI. YMMV.  
+    uwsgi_pass          poulda;
+    include             uwsgi_params;
+    # This one is required, though.
+    track_uploads       uploads 30s;
+  }
+}</pre>
+
+    <p>
+      For further details about the directives, see the
+      <a href="http://wiki.nginx.org/HttpUploadProgressModule">documentation
+      of the Nginx Upload Progress module</a>.
+    </p>
+
 
     <h2>The inevitable screenshots</h2>
     <div class="screenshots">
@@ -153,6 +239,15 @@ poulda.db_url = postgresql://poulda:secret_password@localhost/poulda</pre>
       <a href="https://raw.github.com/dbaty/poulda/master/LICENSE.txt">3-clause BSD license</a>.
     </p>
 
+    <h2>List of releases of Poulda</h2>
+    <h3>Poulda 0.9 (2012-02-17)</h3>
+    <ul>
+      <li>Added support for Nginx Upload Progress module.</li>
+    </ul>
+    <h3>Poulda 0.8 (2012-02-16)</h3>
+    <p>
+      First public release.
+    </p>
   </div>
 </body>
 </html>

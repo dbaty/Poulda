@@ -100,4 +100,5 @@ input {
     line-height: 34px;
     padding-left: 8.5px; /* line-height / 4 */
     background: url("/static/progress_bar.png") repeat-x;
+    background-color: blue;
 }

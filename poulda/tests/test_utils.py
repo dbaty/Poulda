@@ -3,23 +3,6 @@
 from unittest import TestCase
 
 
-class TestGetTimeToStr(TestCase):
-
-    def call_fut(self, t):
-        from poulda.utils import time_to_str
-        return time_to_str(t)
-
-    def test_basics(self):
-        self.assertEqual(self.call_fut(0), '')
-        self.assertEqual(self.call_fut(1), '1s')
-        self.assertEqual(self.call_fut(59), '59s')
-        self.assertEqual(self.call_fut(60), '1m')
-        self.assertEqual(self.call_fut(61), '1m 1s')
-        self.assertEqual(self.call_fut(3599), '59m 59s')
-        self.assertEqual(self.call_fut(3600), '1h')
-        self.assertEqual(self.call_fut(3661), '1h 1m 1s')
-
-
 class TestGetFileFromRequest(TestCase):
 
     def call_fut(self, request):
@@ -90,6 +73,19 @@ class TestCopyToFile(TestCase):
             in_file.seek(0)
             self.assertEqual(in_file.read(length), out.getvalue())
             self.assertEqual(len(out.getvalue()), length)
+
+    def test_wrong_larger_content_length(self):
+        # Try to copy more than the size of the file.
+        import os
+        from StringIO import StringIO
+        this_size = os.stat(__file__).st_size
+        length_to_copy = 100000000  # more than the size of this file
+        with open(__file__) as in_file:
+            out = StringIO()
+            self.call_fut(in_file, length_to_copy, out)
+            in_file.seek(0)
+            self.assertEqual(in_file.read(), out.getvalue())
+            self.assertEqual(len(out.getvalue()), this_size)
 
 
 class TestCheckPassword(TestCase):

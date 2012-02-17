@@ -13,7 +13,7 @@ body {
     font-size: 93.75%; /* 15px */
 }
 
-h1, h2 {
+h1, h2, h3 {
     font-weighte: bold;
     margin-bottom: 0.7em;
     font-size: 100%;
@@ -33,6 +33,10 @@ h2 {
     border-bottom: 1px solid #ddd;
     color: #404853;
     font-size: 1.4em;
+}
+
+h3 {
+    font-size: 1.2em;
 }
 
 a {

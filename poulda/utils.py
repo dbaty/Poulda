@@ -13,20 +13,6 @@ _ = TranslationStringFactory('poulda')
 BUFFER_SIZE = 8192
 
 
-def time_to_str(t):
-    """Return a string representation of the given amount of time
-    ``t`` (expressed in seconds).
-    """
-    s = ''
-    for c, u in zip((3600, 60, 1), ('h', 'm', 's')):
-        q = t / c
-        t = t - (q * c)
-        if q:
-            s += ' %d%s' % (q, u)
-    s = s.lstrip()
-    return s
-
-
 def get_file_from_request(request):
     """Return the input file, its size and its filename.
 
@@ -57,7 +43,7 @@ def get_file_from_request(request):
     file_size -= len(line)
     if line.strip():  # pragma: no cover
         raise ValueError('Oups, I expected a blank line, here. '
-                         'Got the following instead: ', line)
+                         'Got the following instead: %s' % line)
     file_size -= len('\r\n\r\n') + boundary_length
     return input_file, file_size, filename
 
@@ -105,7 +91,7 @@ def copy_to_file(input_file, length, output):
     buffers = [BUFFER_SIZE] * q + [r]
     while buffers:
         chunk = input_file.read(buffers.pop(0))
-        if not chunk:  # pragma: no cache
+        if not chunk:
             # We will get there only if the content length (advertised
             # by the browser) is larger than the effective length of
             # the file, which should not happen.

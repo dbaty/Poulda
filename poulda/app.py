@@ -5,12 +5,15 @@ from pyramid.security import NO_PERMISSION_REQUIRED
 
 from poulda.auth import AuthorizationPolicy
 from poulda.auth import PERMISSION_UPLOAD
-from poulda.models import initialize_db
 
 
 def make_app(global_config, **settings):
     """Return the WSGI application."""
-    initialize_db(settings['poulda.db_url'])
+    nginx_upload_progress = settings.get(
+        'poulda.nginx_upload_progress', 'false').lower() == 'true'
+    if not nginx_upload_progress:
+        from poulda.models import initialize_db
+        initialize_db(settings['poulda.db_url'])
     config = Configurator(settings=settings)
 
     # Authentication and authorization policies
@@ -29,10 +32,17 @@ def make_app(global_config, **settings):
     config.add_route('upload_form', '/upload', request_method='GET')
     config.add_view('poulda.views.upload_form', route_name='upload_form')
     config.add_route('upload', '/upload', request_method='POST')
-    config.add_view('poulda.views.upload', route_name='upload')
-    config.add_route('get_status', '/status')
-    config.add_view('poulda.views.get_status', route_name='get_status',
-                    renderer='json')
+    if nginx_upload_progress:
+        upload_view = 'poulda.views.upload_with_nginx_upload_progress'
+    else:
+        upload_view = 'poulda.views.upload'
+    config.add_view(upload_view, route_name='upload')
+    if not nginx_upload_progress:
+        # We need this view only if Nginx Upload Progress has been
+        # disabled.
+        config.add_route('progress', '/progress')
+        config.add_view('poulda.views.progress', route_name='progress',
+                        renderer='json')
     config.add_route('success', '/success')
     config.add_view('poulda.views.success', route_name='success')
     config.add_route('login', '/login', request_method='POST')

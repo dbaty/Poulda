@@ -10,7 +10,7 @@
   <form id="upload_form"
         enctype="multipart/form-data"
         method="POST"
-        tal:attributes="action 'upload?file_id=%d' % file_id">
+        tal:attributes="action 'upload?X-Progress-ID=%s' % file_id">
     <input type="hidden" id="file_id" name="file_id"
            tal:attributes="value file_id"/>
     <div class="formRow">
