@@ -14,18 +14,22 @@ body {
 }
 
 h1, h2, h3 {
-    font-weighte: bold;
-    margin-bottom: 0.7em;
+    font-weight: bold;
     font-size: 100%;
 }
 
 h1 {
     background-color: #404853;
     color: #eee;
+    margin: 0 0 0.7em 0;
     padding: 1em 0;
     border-bottom: 1px solid black;
     text-align: center;
     font-size: 1.6em;
+}
+
+h2, h3 {
+    margin: 1.4em 0 0.7em 0;
 }
 
 h2 {
