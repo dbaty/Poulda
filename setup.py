@@ -19,7 +19,7 @@ setup(name='Poulda',
       long_description=LONG_DESCRIPTION,
       classifiers=(
         'Development Status :: 4 - Beta',
-        'Framework :: Pylons',
+        'Framework :: Pyramid',
         'License :: OSI Approved :: BSD License',
         'Natural Language :: English',
         'Natural Language :: French',
