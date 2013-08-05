@@ -14,7 +14,7 @@ def make_app(global_config, **settings):
     if not nginx_upload_progress:
         from poulda.models import initialize_db
         initialize_db(settings['poulda.db_url'])
-    config = Configurator(settings=settings)
+    config = Configurator(settings=settings,route_prefix=settings.get('pyramid.route_prefix'))
 
     # Authentication and authorization policies
     auth_policy = AuthTktAuthenticationPolicy(settings['poulda.secret'])
